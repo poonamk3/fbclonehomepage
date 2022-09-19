@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <link rel="stylesheet" href="{% static 'enroll/css/bootstrap.css' %}">
+    <style>
+        .postcenter{
+            text-align: center;
+        }
+        img{
+           text-align: center;
+           margin-left: 30%;
+         }
+    </style>
+</head>
+<body>
+ <div class="container mt-5">
+  <h2 class="text-center alert alert-danger">Details Page</h2>
+    
+        <h1 class="postcenter">{{post.title}}</h1>
+        
+        <img src="{{ post.image.url }}" width="400" height="200">
+        <h5>Author Name :-{{post.author}}</h5>
+        <p>Description :- {{post.description}}</p>
+        <p>{{post.created_at}}</p>
+        <hr>
+        
+        {% if user == post.author %}
+            <a class="btn btn-warning" href="{% url 'updateview' post.id %}">Update</a>
+            <a class="btn btn-warning" href="{% url 'deleteview' post.id %}">Delete</a>            
+        {% endif %}
+        <a class="btn btn-warning" href="{% url 'home' %}">Home</a>
+        
+ </div>
+ <script src="{% static 'enroll/js/jquery.js' %}"></script>
+ <script src="{% static 'enroll/js/popper.js' %}"></script>
+ <script src="{% static 'enroll/js/bootstrap.js' %}"></script>
+</body>
+</html>
