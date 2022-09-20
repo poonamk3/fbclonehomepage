@@ -67,6 +67,7 @@ class MyPostView(ListView):
         return Post.objects.filter(author=user)
 
 
+
 class PostDetailView(DetailView):
     model = Post
     template_name='enroll/detail.html'
@@ -77,7 +78,7 @@ class PostDetailView(DetailView):
 class UpdateView(UpdateView):
     model = Post
     template_name='enroll/update.html'
-    fields = ["title","image","description"]
+    fields = ["title","image","description","likes"]
     success_url ="/"
     def form_valid(self, form):
         return super(UpdateView, self).form_valid(form)
@@ -87,4 +88,5 @@ class DeleteView(DeleteView):
     model = Post
     template_name='enroll/delete.html'
     success_url ="/"
-    
+
+

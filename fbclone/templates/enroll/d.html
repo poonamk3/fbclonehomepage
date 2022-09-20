@@ -1,0 +1,30 @@
+<script>
+  $("#btnlike").click(function(){
+    alert("You are Like is Post");
+   });
+  $.ajax({
+    url: '{% url '' %}',
+    data: {'username': username},
+    success: function (data) {   
+        alert("A user with this username already exists.");    }
+  });
+  
+ </script>
+
+
+<script>
+  $("#btnlike").click(function(){
+    alert("You are Like is Post");
+    let likes = $("id_likes").val();
+    alert("Welcome")
+  };
+  $.ajax({
+    data: {'username': id_likes},
+    url:''
+    success: function (data) {   
+        alert("A user with this username already exists.");  
+    }
+  
+  });
+  
+ </script>

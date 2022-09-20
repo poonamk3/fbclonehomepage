@@ -8,3 +8,10 @@ class Post(models.Model):
 	description=models.TextField()
 	updated_at=models.DateTimeField(auto_now= True)
 	created_at=models.DateTimeField(auto_now_add=True)
+	likes=models.ManyToManyField(User,blank=True, related_name='likes')
+	def likeuser(self):
+		return ",".join(str(i) for i in self.likes.all())
+	def likeusers(self):
+		return self.likes.all().count()      
+	
+    

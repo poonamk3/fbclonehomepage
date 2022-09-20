@@ -5,6 +5,8 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <link rel="stylesheet" href="{% static 'enroll/css/bootstrap.css' %}">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
  <style>
      .postcenter{
           text-align: center;
@@ -35,17 +37,26 @@
      <h1 class="postcenter">{{i.title}}</h1>
      <a href="{% url 'mypostdeatils' i.id %}"><img src="{{ i.image.url }}" width="400" height="200"></a>
      <h5>Author Name :-{{i.author}}</h5>
-     <p>Description :- {{i.description}}</p>
+     <p>Description :- {{i.description}}</p>   
      <p>{{i.created_at}}</p>
+     <a class="btn btn-outline-success" id="btnlike" href="#">Like{{i.likeusers}}</a>
+     <p>{{i.likeuser}}</p>
      {% if user == i.author %}
       <a class="btn btn-outline-success" href="{% url 'deleteview' i.id %}">Delete</a> 
       <a class="btn btn-outline-success" href="{% url 'updateview' i.id %}">Edit</a>
-     {% endif %}
+     {% endif %} 
      <hr>
      {% endfor %}
  </div>
  <script src="{% static 'enroll/js/jquery.js' %}"></script>
  <script src="{% static 'enroll/js/popper.js' %}"></script>
  <script src="{% static 'enroll/js/bootstrap.js' %}"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+ <script>
+  $("#btnlike").click(function(){
+    alert("You are Like is Post");
+  });
+  
+ </script>
 </body>
 </html>
