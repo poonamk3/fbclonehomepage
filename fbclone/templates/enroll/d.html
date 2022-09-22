@@ -57,3 +57,45 @@ $.ajax({
 path('', post_comment_create_and_list_view, name='main-post-view'),
 path('liked/', like_unlike_post, name='like-post-view'),
 <script src="{% static 'enroll/js/jquery.min.js' %}"></script>
+
+
+
+
+# ==========
+      $.ajax({
+
+                    method :'POST',
+                    url: '{% url "like-post" %}',
+                    data: {
+                        'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+
+                        'post_id':post_id,
+                    },
+                    success: function(response){
+                        console.log('success',response)
+                    },
+                    error : function(response){
+                        console.log('error',response)
+                    }
+                })
+// $( document ).ready(function() {
+        //     $(".like-btn").click(function(e){
+        //         e.preventDefault()
+        //         const post_id = $(this).attr('id')  
+        //         console.log(post_id)
+        //     $.ajax({
+        //             method :'POST',
+        //             url: '{% url "like-post" %}',
+        //             data: {
+        //                 'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+
+        //                 'post_id':post_id,
+        //             },
+        //             success: function(response){
+        //                 console.log('success',response)
+        //             },
+        //             error : function(response){
+        //                 console.log('error',response)
+        //             }
+        //     });
+        // });
