@@ -42,32 +42,61 @@
     {% for i in post_list %}
      <h1 class="postcenter">{{i.title}}</h1>
      <a href="{% url 'mypostdeatils' i.id %}"><img src="{{ i.image.url }}" width="400" height="200"></a>
-     <h1 id="count"></h1>
-     <h1 id="user"></h1>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+      Add To Comments
+    </button>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Comments</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+           <form action="" method="post" enctype="multipart/form-data">
+               {% csrf_token %}
+               {{form.as_p}}
+             
+             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <input type="submit" class="btn btn-primary" value="submit">
+            </div>
+             
+          </form>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+    </div>
      <h5>Author Name :-{{i.author}}</h5>
      <p>Description :- {{i.description}}</p>  
      <p>{{i.created_at}}</p>
     <form method="POST" action="/like/" id="{{i.id}}" class="like-from">
       {% csrf_token %}
       <input type="hidden" id="fname" name="post_id" value="{{i.id}}">
-      
-      <button class="fa fa-thumbs-o-up" id="like-btn{{i.id}}" type="submit">
+    <div>
+      <button class="btn btn-outline-success" id="like-btn{{i.id}}" type="submit">
       {% if user not in i.likes.all %}
       Like
       {% else %}
-      UnlLike
-      {% endif %}</button>
+      Unlike
+      {% endif %}
+      </button>
+    </div>
+
       <h5 id="like-count{{i.id}}">{{i.likeusers}}</h5>
-      <p id="like-user{{i.id}}">Liked by {{i.likeuser}}</p>
+      
     </form>
      {% if user == i.author %}
       <a class="btn btn-outline-success" href="{% url 'deleteview' i.id %}">Delete</a>
       <a class="btn btn-outline-success" href="{% url 'updateview' i.id %}">Edit</a>
      {% endif %}
      <hr>
-    {% endfor %}
-
-    
+    {% endfor %}   
  </div>
  <script src="{% static 'enroll/js/jquery.js' %}"></script>
  <script src="{% static 'enroll/js/jquery.min.js' %}"></script>
@@ -75,15 +104,17 @@
  <script src="{% static 'enroll/js/bootstrap.js' %}"></script>
  <script>
     $(document).ready(function(){
-
         $('.like-from').click(function(event){
             event.preventDefault()
+            let total ;
             const post_id = $(this).attr('id')
             const likeText = $(`#like-btn${post_id}`).text()
             const likecount = $(`#like-count${post_id}`).text()
             const likeuser = $(`#like-user${post_id}`).text()
+            const trims = $.trim(likeuser)
             const trim = $.trim(likeText)
-            console.log(likeuser,likecount,post_id)
+            const trimCount = parseInt(likecount)
+            
             $.ajax({
 
                 method :'POST',
@@ -94,27 +125,22 @@
                 },
                 success: function(response){
                     if (trim === "Unlike"){
-                        $(`#like-btn${post_id}`).text('Like')                        
-                        
+                        $(`#like-btn${post_id}`).text('Like') 
+                        total=trimCount-1 
+
                     }else{
-                        $(`#like-btn${post_id}`).text('Unlike')
-                        
+                        $(`#like-btn${post_id}`).text('Unlike')  
+                        total=trimCount+1  
                     }
-                    console.log('success',response.likes)
-                    $('#count').html("<h1>" + response.likes + "</h1>")
-                    $('#user').html("<h1>" + response.value + "</h1>")
-                    $(`#like-count${post_id}`).html("<h5>" + response.likes + "</h5>")
-
-
-                    
+                    $(`#like-count${post_id}`).text(total)
+                                      
                 },
                 error : function(response){
                     console.log('error',response)
                 }
             }) // End Ajax
         }) // End Onclick   
-    }); // End Documents
-        
+    }); // End Documents       
 </script>
 <script></script>
 </body>

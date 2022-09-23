@@ -1,17 +1,17 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.forms import UserCreationForm  
 from django.contrib.auth.models import User
-from .forms import SignupForm
+from .forms import SignupForm , CommentFrom
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView
 from django.views.generic import TemplateView
-from .forms import PostForm
+from .forms import PostForm,CommentFrom
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.views.generic.edit import UpdateView
 from django.http import JsonResponse
-from .models import Post,Like
+from .models import Post,Like,Comment
 from django.views.generic.edit import DeleteView
 class IndexView(TemplateView):
     template_name='enroll/home.html'
@@ -96,7 +96,8 @@ def like_post(request):
     if request.method == 'POST':
         post_id=request.POST.get('post_id')
         post_obj=Post.objects.get(id=post_id)
-        if user in post_obj.likes.all():
+        post_if=post_obj.likes.all()
+        if user in post_if:
             post_obj.likes.remove(user)
         else:
             post_obj.likes.add(user)
@@ -111,7 +112,20 @@ def like_post(request):
         data = {
             'value': like.value,
             'likes': post_obj.likes.all().count(),
-           
+            'post_user':",".join(str(i) for i in post_if),
         }
     return JsonResponse(data, safe=False)
 
+
+class CommentsView(CreateView):
+    model= Comment
+    form_class = CommentFrom
+    template_name='enroll/home.html'
+    success_url = '/'
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.user = self.request.user
+        self.object.save()
+        return super(CommentsView,self).form_valid(form)
+    def get_queryset(self):
+        return Comment.objects.all()

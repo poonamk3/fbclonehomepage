@@ -42,7 +42,7 @@
           <hr style="clear:both;"/>
       {% endif %}
     </div>
-    {% for i in post_list %}
+    {% for i in user %}
      <h1 class="postcenter">{{i.title}}</h1>
      <a href="{% url 'mypostdeatils' i.id %}"><img src="{{ i.image.url }}" width="400" height="200"></a>
      

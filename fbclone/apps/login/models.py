@@ -22,7 +22,13 @@ class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     value = models.CharField(choices=LIKE_CHOICES, default="Like", max_length=50)
-
-    
     def __str__(self):
         return f"{self.user}-{self.post}-{self.value}"
+
+class Comment(models.Model): 
+    post = models.ForeignKey(Post,on_delete=models.CASCADE,related_name='postcomments')
+    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='usercomments')
+    body = models.TextField() 
+    created = models.DateTimeField(auto_now_add=True) 
+    updated = models.DateTimeField(auto_now=True) 
+
