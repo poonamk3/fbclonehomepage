@@ -99,3 +99,7 @@ path('liked/', like_unlike_post, name='like-post-view'),
         //             }
         //     });
         // });
+
+
+
+$('#count').html("<h1>" + response.data.likes + "</h1>")

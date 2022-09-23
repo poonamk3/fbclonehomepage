@@ -42,7 +42,8 @@
     {% for i in post_list %}
      <h1 class="postcenter">{{i.title}}</h1>
      <a href="{% url 'mypostdeatils' i.id %}"><img src="{{ i.image.url }}" width="400" height="200"></a>
-     
+     <h1 id="count"></h1>
+     <h1 id="user"></h1>
      <h5>Author Name :-{{i.author}}</h5>
      <p>Description :- {{i.description}}</p>  
      <p>{{i.created_at}}</p>
@@ -56,7 +57,7 @@
       {% else %}
       UnlLike
       {% endif %}</button>
-      <h5 id="like-count{{i.id}}">{{i.likeusers}} likes</h5>
+      <h5 id="like-count{{i.id}}">{{i.likeusers}}</h5>
       <p id="like-user{{i.id}}">Liked by {{i.likeuser}}</p>
     </form>
      {% if user == i.author %}
@@ -82,7 +83,7 @@
             const likecount = $(`#like-count${post_id}`).text()
             const likeuser = $(`#like-user${post_id}`).text()
             const trim = $.trim(likeText)
-            console.log(likeuser,likecount)
+            console.log(likeuser,likecount,post_id)
             $.ajax({
 
                 method :'POST',
@@ -93,13 +94,19 @@
                 },
                 success: function(response){
                     if (trim === "Unlike"){
-                        $(`#like-btn${post_id}`).text('Like')
+                        $(`#like-btn${post_id}`).text('Like')                        
                         
                     }else{
                         $(`#like-btn${post_id}`).text('Unlike')
                         
                     }
-                    console.log('success',response)
+                    console.log('success',response.likes)
+                    $('#count').html("<h1>" + response.likes + "</h1>")
+                    $('#user').html("<h1>" + response.value + "</h1>")
+                    $(`#like-count${post_id}`).html("<h5>" + response.likes + "</h5>")
+
+
+                    
                 },
                 error : function(response){
                     console.log('error',response)

@@ -107,9 +107,11 @@ def like_post(request):
             else :
                 like.value = 'Like'
         like.save()
+        
         data = {
             'value': like.value,
             'likes': post_obj.likes.all().count(),
+           
         }
     return JsonResponse(data, safe=False)
 
