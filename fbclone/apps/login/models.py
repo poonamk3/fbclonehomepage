@@ -12,7 +12,8 @@ class Post(models.Model):
 	def likeuser(self):
 		return ",".join(str(i) for i in self.likes.all())
 	def likeusers(self):
-		return self.likes.all().count()      
+		return self.likes.all().count()   
+	
 
 LIKE_CHOICES = (
     ('Like', 'Like'),
@@ -31,4 +32,5 @@ class Comment(models.Model):
     body = models.TextField() 
     created = models.DateTimeField(auto_now_add=True) 
     updated = models.DateTimeField(auto_now=True) 
+    
 

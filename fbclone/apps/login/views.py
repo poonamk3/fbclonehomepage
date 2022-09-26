@@ -13,6 +13,8 @@ from django.views.generic.edit import UpdateView
 from django.http import JsonResponse
 from .models import Post,Like,Comment
 from django.views.generic.edit import DeleteView
+from bootstrap_modal_forms.generic import BSModalCreateView
+from django.urls import reverse_lazy
 class IndexView(TemplateView):
     template_name='enroll/home.html'
 
@@ -38,6 +40,10 @@ class PostView(CreateView):
         self.object.author = self.request.user
         self.object.save()
         return super(PostView,self).form_valid(form)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['from'] = context["form"]
+        return context
 
 
 @method_decorator(login_required, name='dispatch')            
@@ -120,12 +126,10 @@ def like_post(request):
 class CommentsView(CreateView):
     model= Comment
     form_class = CommentFrom
-    template_name='enroll/home.html'
+    template_name='enroll/master.html'
     success_url = '/'
-    def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.user = self.request.user
-        self.object.save()
-        return super(CommentsView,self).form_valid(form)
-    def get_queryset(self):
-        return Comment.objects.all()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['fromname'] = context["form"]
+        context['login_view_in_action'] = True
+        return context
